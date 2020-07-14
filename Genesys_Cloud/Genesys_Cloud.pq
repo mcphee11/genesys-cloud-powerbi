@@ -93,7 +93,9 @@ Genesys_Cloud = [
     Authentication = [
         OAuth = [
         StartLogin=StartLogin,
-        FinishLogin=FinishLogin
+        FinishLogin=FinishLogin,
+        Refresh=Refresh,
+        Logout=Logout
         ]
     ],
     Label = Extension.LoadString("DataSourceLabel")
