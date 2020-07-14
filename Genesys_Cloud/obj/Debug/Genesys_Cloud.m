@@ -1,0 +1,116 @@
+﻿//This example was build in support with the project below as well as Microsoft Documentation
+//
+//https://github.com/plasne/PowerBI-OAuthToSQL/blob/master/OAuthToSQL.pq
+//
+//This is designed as a Example ONLY on how you can sue PowerBi connectors to connect to Genesys Cloud
+
+
+// This file contains your Data Connector logic
+section Genesys_Cloud;
+
+// oauth details
+client_id = "13b22f8f-1dd8-4804-a3d8-bf23c28c8c26";
+client_secret = "uZEfKRst_8OdFDeKZqt5B6htSPBDkhthkop-XHVE-Fs";
+token_uri = "https://login.mypurecloud.com.au/oauth/token";
+authorize_uri = "https://login.mypurecloud.com.au/oauth/authorize";
+logout_uri = "https://login.microsoftonline.com/logout.srf";
+redirect_uri = "https://oauth.powerbi.com/views/oauthredirect.html";
+
+StartLogin = (resourceUrl, state, display) =>
+    let
+        authorizeUrl = authorize_uri & "?" & Uri.BuildQueryString([
+            client_id = client_id,  
+            redirect_uri = redirect_uri,
+            state = state,
+            response_type = "code",
+            response_mode = "query",
+            login = "login"
+        ])
+    in
+        [
+            LoginUri = authorizeUrl,
+            CallbackUri = redirect_uri,
+            WindowHeight = 720,
+            WindowWidth = 1024,
+            Context = null
+        ];
+
+FinishLogin = (context, callbackUri, state) =>
+    let
+        parts = Uri.Parts(callbackUri)[Query],
+        result = if (Record.HasFields(parts, {"error", "error_description"})) then 
+                    error Error.Record(parts[error], parts[error_description], parts)
+                 else
+                    TokenMethod("authorization_code", "code", parts[code])
+    in
+        result;
+
+// Called when the access_token has expired, and a refresh_token is available.
+Refresh = (resourceUrl, refresh_token) => TokenMethod("refresh_token", "refresh_token", refresh_token);
+
+Logout = (token) => logout_uri;
+
+// grantType:  Maps to the "grant_type" query parameter.
+// tokenField: The name of the query parameter to pass in the code.
+// code:       Is the actual code (authorization_code or refresh_token) to send to the service.
+TokenMethod = (grantType, tokenField, code) =>
+    let
+        queryString = [
+            client_id = client_id,
+            client_secret = client_secret,
+            grant_type = grantType,
+            redirect_uri = redirect_uri
+        ],
+        queryWithCode = Record.AddField(queryString, tokenField, code),
+
+        tokenResponse = Web.Contents(token_uri, [
+            Content = Text.ToBinary(Uri.BuildQueryString(queryWithCode)),
+            Headers = [
+                #"Content-type" = "application/x-www-form-urlencoded",
+                #"Accept" = "application/json"
+            ],
+            ManualStatusHandling = {400} 
+        ]),
+        body = Json.Document(tokenResponse),
+        result = if (Record.HasFields(body, {"error", "error_description"})) then 
+                    error Error.Record(body[error], body[error_description], body)
+                 else
+                    body
+    in
+        result;
+
+[DataSource.Kind="Genesys_Cloud", Publish="Genesys_Cloud.Publish"]
+shared Genesys_Cloud.Contents = (url as text) =>
+
+    //Basic GET request example need to add POST & PUT etc as configuration options.
+    let
+        source = Web.Contents(url), 
+        json = Json.Document(source)     
+    in
+        json;
+
+// Data Source Kind description
+Genesys_Cloud = [
+    Authentication = [
+        OAuth = [
+        StartLogin=StartLogin,
+        FinishLogin=FinishLogin
+        ]
+    ],
+    Label = Extension.LoadString("DataSourceLabel")
+];
+
+// Data Source UI publishing description
+Genesys_Cloud.Publish = [
+    Beta = true,
+    Category = "Other",
+    ButtonText = { Extension.LoadString("ButtonTitle"), Extension.LoadString("ButtonHelp") },
+    LearnMoreUrl = "https://powerbi.microsoft.com/",
+    SourceImage = Genesys_Cloud.Icons,
+    SourceTypeImage = Genesys_Cloud.Icons
+];
+
+Genesys_Cloud.Icons = [
+    Icon16 = { Extension.Contents("Image16.png"), Extension.Contents("Image20.png"), Extension.Contents("Image24.png"), Extension.Contents("Image32.png") },
+    Icon32 = { Extension.Contents("Image32.png"), Extension.Contents("Image40.png"), Extension.Contents("Image48.png"), Extension.Contents("Image64.png") }
+];
