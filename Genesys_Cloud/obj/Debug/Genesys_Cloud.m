@@ -1,6 +1,5 @@
-﻿//This example was build in support with the project below as well as Microsoft Documentation
-//
-//https://github.com/plasne/PowerBI-OAuthToSQL/blob/master/OAuthToSQL.pq
+﻿//This example was build in support with the project:https://github.com/plasne/PowerBI-OAuthToSQL/blob/master/OAuthToSQL.pq 
+// as well as Microsoft Documentation online.
 //
 //This is designed as a Example ONLY on how you can sue PowerBi connectors to connect to Genesys Cloud
 
@@ -9,10 +8,10 @@
 section Genesys_Cloud;
 
 // oauth details
-client_id = "13b22f8f-1dd8-4804-a3d8-bf23c28c8c26";
-client_secret = "uZEfKRst_8OdFDeKZqt5B6htSPBDkhthkop-XHVE-Fs";
-token_uri = "https://login.mypurecloud.com.au/oauth/token";
-authorize_uri = "https://login.mypurecloud.com.au/oauth/authorize";
+client_id = "ENTER_IN_YOUR_ID";
+client_secret = "ENTER_IN_YOUR_SECRET";
+token_uri = "https://login.mypurecloud.com.au/oauth/token"; //Set to your ORG region eg: mypurecloud.com or mypurecloud.jp
+authorize_uri = "https://login.mypurecloud.com.au/oauth/authorize"; //Set to your ORG region eg: mypurecloud.com or mypurecloud.jp
 logout_uri = "https://login.microsoftonline.com/logout.srf";
 redirect_uri = "https://oauth.powerbi.com/views/oauthredirect.html";
 
@@ -79,12 +78,13 @@ TokenMethod = (grantType, tokenField, code) =>
     in
         result;
 
-[DataSource.Kind="Genesys_Cloud", Publish="Genesys_Cloud.Publish"]
-shared Genesys_Cloud.Contents = (url as text) =>
+[DataSource.Kind="Genesys_Cloud", Publish="Genesys_Cloud.Publish"]    
+shared Genesys_Cloud.Contents = (url as text, optional method as text, optional body as text)=>
 
-    //Basic GET request example need to add POST & PUT etc as configuration options.
+    //now supports POST and defaults to GET if not used. Body needs to be in JSON format.
     let
-        source = Web.Contents(url), 
+        source = if(method = "POST") then Web.Contents(url, [Headers = [#"Content-Type"="application/json"], Content = Text.ToBinary(body)])
+        else  Web.Contents(url),
         json = Json.Document(source)     
     in
         json;
@@ -94,7 +94,9 @@ Genesys_Cloud = [
     Authentication = [
         OAuth = [
         StartLogin=StartLogin,
-        FinishLogin=FinishLogin
+        FinishLogin=FinishLogin,
+        Refresh=Refresh,
+        Logout=Logout
         ]
     ],
     Label = Extension.LoadString("DataSourceLabel")

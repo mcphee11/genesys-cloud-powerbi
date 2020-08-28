@@ -78,12 +78,13 @@ TokenMethod = (grantType, tokenField, code) =>
     in
         result;
 
-[DataSource.Kind="Genesys_Cloud", Publish="Genesys_Cloud.Publish"]
-shared Genesys_Cloud.Contents = (url as text) =>
+[DataSource.Kind="Genesys_Cloud", Publish="Genesys_Cloud.Publish"]    
+shared Genesys_Cloud.Contents = (url as text, optional method as text, optional body as text)=>
 
-    //Basic GET request example need to add POST & PUT etc as configuration options.
+    //now supports POST and defaults to GET if not used. Body needs to be in JSON format.
     let
-        source = Web.Contents(url), 
+        source = if(method = "POST") then Web.Contents(url, [Headers = [#"Content-Type"="application/json"], Content = Text.ToBinary(body)])
+        else  Web.Contents(url),
         json = Json.Document(source)     
     in
         json;

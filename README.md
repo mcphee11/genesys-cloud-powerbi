@@ -19,7 +19,19 @@ To conenct to the new connector in PowerBi so to "GetData" under "Other" you wil
 
 ![](/docs/images/screenShot4.png?raw=true)
 
-You will get a 3rd party warning. Then the connector will ask you for the url input that you want to connect to. (NOTE in this first code PUSH only GET is supported, im yet to add support for other methods) enter a endpoint in full for example "https://api.mypurecloud.com.au/api/v2/users". You will then need to sign in.
+You will get a 3rd party warning. Then the connector will ask you for 3 bits of information. 
+
+1- The URL endpoint that your going to call in full for example "https://api.mypurecloud.com.au/api/v2/users".
+
+2- The Method an is optional setting and if left blank it will default to a GET request. Currently I have only added support for POST as well.
+
+3- The body is also optional and only used if the Method is set to POST. In this case it is the JSON that is sent in the body. This needs to be in JSON format.
+
+This update enables support for POST as well as the GET that was only originaly supported in this example.
+
+![](/docs/images/screenShot7.png?raw=true)
+
+You will then need to sign in.
 
 ![](/docs/images/screenShot5.png?raw=true)
 
