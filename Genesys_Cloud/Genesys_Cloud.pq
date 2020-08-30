@@ -8,8 +8,8 @@
 section Genesys_Cloud;
 
 // oauth details
-client_id = "ENTER_IN_YOUR_ID";
-client_secret = "ENTER_IN_YOUR_SECRET";
+client_id = Text.FromBinary(Extension.Contents("client_id.env")); //you need to add your client_id.env file to the project
+client_secret = Text.FromBinary(Extension.Contents("client_secret.env")); //you need to add your client_secret.env file to the project
 token_uri = "https://login.mypurecloud.com.au/oauth/token"; //Set to your ORG region eg: mypurecloud.com or mypurecloud.jp
 authorize_uri = "https://login.mypurecloud.com.au/oauth/authorize"; //Set to your ORG region eg: mypurecloud.com or mypurecloud.jp
 logout_uri = "https://login.microsoftonline.com/logout.srf";

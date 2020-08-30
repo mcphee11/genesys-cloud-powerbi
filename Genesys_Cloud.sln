@@ -3,7 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.645
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{4DF76451-A46A-4C0B-BE03-459FAAFA07E6}") = "Genesys_Cloud", "Genesys_Cloud\Genesys_Cloud.mproj", "{51E210F3-3B10-4EF2-A45B-2B524078F158}"
+Project("{4DF76451-A46A-4C0B-BE03-459FAAFA07E6}") = "Genesys_Cloud", "Genesys_Cloud\Genesys_Cloud.mproj", "{248DE527-A0F6-4936-AA94-F8C6401529DD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A650EAC1-1394-4BF3-9A52-4D6BDF6243BD}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +17,10 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{51E210F3-3B10-4EF2-A45B-2B524078F158}.Debug|x86.ActiveCfg = Debug|x86
-		{51E210F3-3B10-4EF2-A45B-2B524078F158}.Debug|x86.Build.0 = Debug|x86
-		{51E210F3-3B10-4EF2-A45B-2B524078F158}.Release|x86.ActiveCfg = Release|x86
-		{51E210F3-3B10-4EF2-A45B-2B524078F158}.Release|x86.Build.0 = Release|x86
+		{248DE527-A0F6-4936-AA94-F8C6401529DD}.Debug|x86.ActiveCfg = Debug|x86
+		{248DE527-A0F6-4936-AA94-F8C6401529DD}.Debug|x86.Build.0 = Debug|x86
+		{248DE527-A0F6-4936-AA94-F8C6401529DD}.Release|x86.ActiveCfg = Release|x86
+		{248DE527-A0F6-4936-AA94-F8C6401529DD}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
