@@ -43,6 +43,12 @@
     <Compile Include="resources.resx">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="client_id.env">
+      <SubType>Content</SubType>
+    </Compile>
+    <Compile Include="client_secret.env">
+      <SubType>Content</SubType>
+    </Compile>
     <Content Include="Genesys_Cloud.query.pq">
       <SubType>Code</SubType>
     </Content>

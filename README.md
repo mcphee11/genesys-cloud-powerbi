@@ -5,7 +5,7 @@ This current example uses "Authorization code" grant to OAuth2 to your Genesys C
 
 ![](/docs/images/screenShot1.png?raw=true)
 
-You will then need to configure the "client_id" & "client_secret" to your own as well as the ORG location. In my example im based in Australia so i have used "mypurecloud.com.au" if your in a different region this will need to be changed.
+You will then need to create 2 files "client_id.env" & "client_secret.env" with your OAuth details and add them into your project. You will need to ensure that they are also set to "Compile" as the build action to ensure they are included int eh .mez file thats built as well as set the the ORG location in the raw code. In my example im based in Australia so i have used "mypurecloud.com.au" if your in a different region this will need to be changed.
 
 ![](/docs/images/screenShot2.png?raw=true)
 
