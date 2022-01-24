@@ -1,6 +1,8 @@
 # genesys-cloud-powerbi
 Microsoft Power Bi connector to Genesys Cloud Analytics API Example
 
+NOTE: This is an older method of connecting you might be better to look at the newer example I have built in another repo [Here](https://github.com/mcphee11/genesys-cloud-powerbi-direct) as it is a direct Advanced query in PowerBi.
+
 This current example uses "Authorization code" grant to OAuth2 to your Genesys Cloud ORG environment. The first thing you will need to do is to get a ClientID and Secret for this OAuth2 type from your Genesys Cloud ORG with the ability to connect to the API endpoint you require for example the Scope of Analytics or Users. This will also need to have a redirect to the Microsoft url: "https://oauth.powerbi.com/views/oauthredirect.html"
 
 ![](/docs/images/screenShot1.png?raw=true)
